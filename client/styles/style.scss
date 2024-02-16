@@ -1,0 +1,19 @@
+@import "variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-icons/font/bootstrap-icons.scss";
+@import "./layout/sidebar";
+@import "./layout/container";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.truncate-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 5; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .news-grid{
+    display:  grid;
+    grid-template-columns: 2fr 3fr;
+  }
