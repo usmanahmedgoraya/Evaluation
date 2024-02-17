@@ -10,7 +10,7 @@ const DataFigures = () => {
     const articlesPerPage = 10; // Number of articles to display per page
 
     useEffect(() => {
-        getAllArticles();
+        getAllArticles(currentPage);
     }, []);
 
     const formatDate = (dateString: string): string => {

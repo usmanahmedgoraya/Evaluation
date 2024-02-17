@@ -139,4 +139,64 @@ export class NewsService {
       throw new Error('An error occurred while updating Table 1 with references.');
     }
   }
+
+  // Get The Graph data from Database
+  async getAnalytics() {
+    // Define start and end dates for the data retrieval
+    const startDate = new Date('2016-10-26');
+    const endDate = new Date('2016-11-26');
+
+    
+    // Define the interval duration in days
+    const intervalDays = 4;
+  
+    // Create an empty array to store interval dates
+    const intervals = [];
+  
+    // Create intervals of dates with the specified duration
+    for (let currentDate = new Date(startDate); currentDate <= endDate; currentDate.setDate(currentDate.getDate() + intervalDays)) {
+      intervals.push(new Date(currentDate));
+    }
+  
+    // Define MongoDB aggregation pipelines for each interval
+    const pipelines = intervals.map((intervalStartDate, index) => {
+      // Calculate the end date of the current interval
+      const intervalEndDate = new Date(intervalStartDate);
+      intervalEndDate.setDate(intervalEndDate.getDate() + intervalDays);
+  
+      // Define a $match stage to filter documents within the current interval
+      return {
+        $match: {
+          language: { $in: ['english', 'spanish'] },
+          published: { $gte: intervalStartDate, $lt: intervalEndDate }
+        }
+      };
+    });
+  
+    // Execute MongoDB aggregation for each pipeline asynchronously and collect results
+    const results = await Promise.all(
+      pipelines.map(async (pipeline) => {
+        // Perform aggregation query using the provided pipeline
+        const result = await this.articleModel.aggregate([
+          pipeline,
+          // Group documents by language and calculate count for each group
+          { $group: { _id: '$language', count: { $sum: 1 } } }
+        ]);
+        // Return the aggregation result for the current interval
+        return result;
+      })
+    );
+  
+    // Extract dates from intervals array and format them as ISO strings
+    const dates = intervals.map(interval => interval.toISOString());
+  
+    // Extract English and Spanish counts from aggregation results
+    const englishCounts = results.map(result => result.find(item => item._id === 'english')?.count || 0);
+    const spanishCounts = results.map(result => result.find(item => item._id === 'spanish')?.count || 0);
+  
+    // Return dates, English counts, and Spanish counts
+    return { dates, englishCounts, spanishCounts };
+  }
+  
+
 }

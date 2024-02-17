@@ -21,6 +21,14 @@ interface BlogDataItem {
     btnbg: string;
 }
 
+interface TopCardsProps {
+    bg: string;
+    title: string;
+    subtitle: string;
+    earning: string;
+    icon: string;
+  }
+
 const BlogData: BlogDataItem[] = [
     {
         image: bg1,
@@ -64,7 +72,7 @@ const Dashboard: React.FC = () => {
         localAuth = JSON.parse(localAuth!);
         if (localAuth?.state?.isLoggedin) {
             router.push('/analytics/dashboard')
-            getAllArticles();
+            getAllArticles(1);
         } else {
             router.push('/auth/login')
         }

@@ -14,7 +14,7 @@ export class NewsController {
     return this.newsService.findAll(req.user, page, limit);
   }
 
-  @Get(':id')
+  @Get('single/:id')
   @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string, @Req() req: any) {
     return this.newsService.findOne(id, req.user);
@@ -28,5 +28,10 @@ export class NewsController {
     const { type } = reaction
     const article = await this.newsService.userBlogReaction(id, type, req.user);
     return article
+  }
+
+  @Get('analytics')
+  async getAnalytics() {
+    return await this.newsService.getAnalytics()
   }
 }

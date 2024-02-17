@@ -16,6 +16,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_app.ts", "zustand-store/newsStore/News.jsx", "zustand/article.zustand.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_app.ts", "zustand-store/newsStore/News.jsx", "zustand/article.zustand.ts", "src/components/dashboard/SalesChart.js"],
   "exclude": ["node_modules"]
 }
