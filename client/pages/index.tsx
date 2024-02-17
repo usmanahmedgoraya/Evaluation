@@ -1,9 +1,9 @@
 import bg4 from '@/src/assets/images/bg/bg4.jpg'
 import Blog from '@/src/components/dashboard/Blog'
 import useArticleStore from '@/zustand/article.zustand'
+import Pagination from '@mui/material/Pagination'
 import React, { useEffect, useState } from 'react'
 import { Col, Row } from 'reactstrap'
-import Pagination from '@mui/material/Pagination';
 import Header from "../src/layouts/header/Header"
 const Home = () => {
   const { getAllArticles, articles, totalPages } = useArticleStore();
@@ -11,7 +11,7 @@ const Home = () => {
   const articlesPerPage = 10; // Number of articles to display per page
 
   useEffect(() => {
-    getAllArticles();
+    getAllArticles(currentPage);
   }, []);
 
 

@@ -9,7 +9,7 @@ interface BlogProps {
   subtitle?: string;
   text: string;
   color?: string;
-  defaultImage: string;
+  defaultImage: any;
   blog: {
     _id: string;
     comments: any[];
