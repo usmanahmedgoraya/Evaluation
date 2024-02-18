@@ -21,10 +21,7 @@ export class NewsService {
   ) { }
 
 
-  async findAll(user: User, page = 1, limit = 10): Promise<{ articles: Article[], totalCount: number }> {
-    if (!user) {
-      throw new UnauthorizedException('Not Authorized')
-    }
+  async findAll(page = 1, limit = 10): Promise<{ articles: Article[], totalCount: number }> {
     const skip = (page - 1) * limit;
     const articles = await this.articleModel.find().populate('reference').populate({
       path: 'likes',
@@ -34,20 +31,6 @@ export class NewsService {
     return { articles, totalCount };
   }
 
-  async GetAllData(user: User, page = 1, limit = 10): Promise<ArticleDetail[]> {
-    if (!user) {
-      throw new UnauthorizedException('Not Authorized')
-    }
-    const skip = (page - 1) * limit;
-    const articles = await this.articleDetailModel.find().populate('reference').populate({
-      path: 'likes',
-      populate: {
-        path: 'user',
-        model: 'User',
-      },
-    }).skip(skip).limit(limit);
-    return articles;
-  }
 
   // User Reaction on Article
   async userBlogReaction(id: string, reactionType: React, user: User): Promise<Reaction> {
@@ -82,16 +65,15 @@ export class NewsService {
 
 
 
-  async findOne(id: string, user: User): Promise<Article> {
-    if (!user) {
-      throw new UnauthorizedException('Not Authorized')
-    }
+  async findOne(id: string): Promise<Article> {
     const article = await this.articleModel.findOne({ _id: id }).populate('reference').populate({
       path: 'likes',
       model: 'Reaction', // Specify the model to populate likes with
     }); // Populate the 'likes' array
     return article;
   }
+
+  // Update collection data
   async updateTable1WithReferences(): Promise<void> {
     try {
       const table1Docs = await this.articleModel.find().lean(); // Convert to plain JavaScript objects
@@ -139,6 +121,8 @@ export class NewsService {
       throw new Error('An error occurred while updating Table 1 with references.');
     }
   }
+
+
 
   // Get The Graph data from Database
   async getAnalytics() {

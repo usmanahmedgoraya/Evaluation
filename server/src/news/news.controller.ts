@@ -9,15 +9,13 @@ export class NewsController {
   constructor(private readonly newsService: NewsService) { }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  async findAll(@Req() req: any, @Query('page') page = 1, @Query('limit') limit = 10) {
-    return this.newsService.findAll(req.user, page, limit);
+  async findAll( @Query('page') page = 1, @Query('limit') limit = 10) {
+    return this.newsService.findAll(page, limit);
   }
 
   @Get('single/:id')
-  @UseGuards(JwtAuthGuard)
-  findOne(@Param('id') id: string, @Req() req: any) {
-    return this.newsService.findOne(id, req.user);
+  findOne(@Param('id') id: string,) {
+    return this.newsService.findOne(id);
   }
 
   // reaction on Article
