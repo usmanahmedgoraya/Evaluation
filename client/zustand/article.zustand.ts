@@ -80,7 +80,7 @@ const ArticleStore = (set: any) => ({
   getSingleArticle: async (id: any) => {
     let localAuth: any = localStorage.getItem('Auth');
     localAuth = JSON.parse(localAuth || 'null') as LocalAuth | null;
-    const res = await fetch(`${domain}/article/${id}`, {
+    const res = await fetch(`${domain}/article/single/${id}`, {
       method: 'GET',
       
     });
