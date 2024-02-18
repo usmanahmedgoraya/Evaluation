@@ -9,6 +9,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     credentials: true,
+    Headers:'*'
   };
   app.enableCors(options);
   app.useGlobalPipes(new ValidationPipe());
