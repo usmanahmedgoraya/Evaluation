@@ -50,6 +50,7 @@ interface ReactionCounts {
 }
 
 const domain = 'https://evaluation-backend-kappa.vercel.app';
+// const domain = 'http://localhost:3002';
 
 const ArticleStore = (set: any) => ({
   articles: [] as Article[],
@@ -67,9 +68,6 @@ const ArticleStore = (set: any) => ({
   getAllArticles: async (page: number) => {
     const res = await fetch(`${domain}/article?page=${page}`, {
       method: 'GET',
-      headers: {
-        Authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2QxMTZhNDA4NWY2Y2JlMTcyZjBhOSIsImlhdCI6MTcwNzk3NzU1NiwiZXhwIjoxNzA4MjM2NzU2fQ.rHJN143klUtbb1WgJV-MhTIqha5qOsU4YHGPB2YKtUA`,
-      },
     });
     const data = await res.json();
     console.log(data.articles);
@@ -84,9 +82,7 @@ const ArticleStore = (set: any) => ({
     localAuth = JSON.parse(localAuth || 'null') as LocalAuth | null;
     const res = await fetch(`${domain}/article/${id}`, {
       method: 'GET',
-      headers: {
-        Authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2QxMTZhNDA4NWY2Y2JlMTcyZjBhOSIsImlhdCI6MTcwNzk3NzU1NiwiZXhwIjoxNzA4MjM2NzU2fQ.rHJN143klUtbb1WgJV-MhTIqha5qOsU4YHGPB2YKtUA`,
-      },
+      
     });
     const data = await res.json();
     console.log(data);
