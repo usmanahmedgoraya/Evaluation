@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { blogReactionDto } from './dto/userBlogReaction';
 import { NewsService } from './news.service';
 import { Reaction } from './schema/reaction.schema';
