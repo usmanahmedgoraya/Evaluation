@@ -11,13 +11,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // Ensure CORS is allowed for localhost:3000
-  const configService = app.get(ConfigService);
-  const frontendUrl = configService.get('FRONTEND_URL');
-  if (frontendUrl) {
-    app.enableCors({
-      origin: configService.get('FRONTEND_URL'),
-    });
-  }
+  app.enableCors({
+    origin:'https://evaluation-rust.vercel.app',
+  })
 
   // Start the application
   await app.listen(3002);
