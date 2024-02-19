@@ -1,8 +1,6 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { NextFunction } from 'express';
-import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -10,22 +8,30 @@ async function bootstrap() {
   // Enable global validation pipe
   app.useGlobalPipes(new ValidationPipe());
 
-  // Ensure CORS is allowed for localhost:3000
-  // app.enableCors({
-  //   origin: true,
-  //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  //   // allowed headers
-  //   allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept' ,'Authorization'],
-  //   // headers exposed to the client
-  //   exposedHeaders: ['Authorization'],
-  //   credentials: true, // Enable credentials (cookies, authorization headers) cross-origin
-  // });
-
+  // app.useBodyParser<any('json');
+  // app.useBodyParser('json', { limit: '5mb' });
+  // const corsOptions: CorsOptions = {
+  //   origin: 'http://localhost:3000', // Replace with your frontend URL
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   credentials: true,
+  // };
+  // app.enableCors(corsOptions);
+  // app.enableCors()
   app.enableCors({
-
-    origin:'https://evaluation-rust.vercel.app',
-    
-    });
+    // origin: 'http://localhost:3000',   //origin: true, => true for all origins
+    origin: '*',
+    // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    // allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'Authorization'],
+    // allowedHeaders: '*',
+    // allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    // credentials: true,
+    optionsSuccessStatus: 204,
+  });
+  // app.use(function (request: Request, response: Response, next: NextFunction) {
+  //   response.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  //   next();
+  // });
+  app.enableCors();
 
   // Start the application
   await app.listen(3002);
