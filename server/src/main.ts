@@ -12,8 +12,14 @@ async function bootstrap() {
 
   // Ensure CORS is allowed for localhost:3000
   app.enableCors({
-    origin:'https://evaluation-rust.vercel.app',
-  })
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    // allowed headers
+    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept' ,'Authorization'],
+    // headers exposed to the client
+    exposedHeaders: ['Authorization'],
+    credentials: true, // Enable credentials (cookies, authorization headers) cross-origin
+  });
 
   // Start the application
   await app.listen(3002);
