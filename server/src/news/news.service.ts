@@ -8,6 +8,9 @@ import { React, Reaction } from './schema/reaction.schema';
 
 @Injectable()
 export class NewsService {
+  totalCountry() {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     // Specify the type for articleModel
     @InjectModel(Article.name)
@@ -130,24 +133,24 @@ export class NewsService {
     const startDate = new Date('2016-10-26');
     const endDate = new Date('2016-11-26');
 
-    
+
     // Define the interval duration in days
     const intervalDays = 4;
-  
+
     // Create an empty array to store interval dates
     const intervals = [];
-  
+
     // Create intervals of dates with the specified duration
     for (let currentDate = new Date(startDate); currentDate <= endDate; currentDate.setDate(currentDate.getDate() + intervalDays)) {
       intervals.push(new Date(currentDate));
     }
-  
+
     // Define MongoDB aggregation pipelines for each interval
     const pipelines = intervals.map((intervalStartDate, index) => {
       // Calculate the end date of the current interval
       const intervalEndDate = new Date(intervalStartDate);
       intervalEndDate.setDate(intervalEndDate.getDate() + intervalDays);
-  
+
       // Define a $match stage to filter documents within the current interval
       return {
         $match: {
@@ -156,7 +159,7 @@ export class NewsService {
         }
       };
     });
-  
+
     // Execute MongoDB aggregation for each pipeline asynchronously and collect results
     const results = await Promise.all(
       pipelines.map(async (pipeline) => {
@@ -170,17 +173,235 @@ export class NewsService {
         return result;
       })
     );
-  
+
+    console.log(results);
+
     // Extract dates from intervals array and format them as ISO strings
     const dates = intervals.map(interval => interval.toISOString());
-  
+
     // Extract English and Spanish counts from aggregation results
     const englishCounts = results.map(result => result.find(item => item._id === 'english')?.count || 0);
     const spanishCounts = results.map(result => result.find(item => item._id === 'spanish')?.count || 0);
-  
+
     // Return dates, English counts, and Spanish counts
     return { dates, englishCounts, spanishCounts };
   }
-  
 
+
+  async totalStats() {
+    const countryData = await this.articleModel.aggregate([
+      {
+        $lookup: {
+          from: "articledetails",
+          localField: "reference",
+          foreignField: "_id",
+          as: "articleDetails"
+        }
+      },
+      {
+        $unwind: "$articleDetails"
+      },
+      {
+        $group: {
+          _id: "$articleDetails.country",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const siteUrlData = await this.articleModel.aggregate([
+      {
+        $lookup: {
+          from: "articledetails",
+          localField: "reference",
+          foreignField: "_id",
+          as: "articleDetails"
+        }
+      },
+      {
+        $unwind: "$articleDetails"
+      },
+      {
+        $group: {
+          _id: "$articleDetails.site_url",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const languageData = await this.articleModel.aggregate([
+      {
+        $group: {
+          _id: "$language",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    return { countryData, siteUrlData, languageData };
+  }
+
+  async totalAnalyticsStats() {
+    const startDate = new Date('2016-10-26');
+    const endDate = new Date('2016-11-26');// Adjust start date to one month ago
+
+    // Define the interval duration in days
+    const intervalDays = 4;
+
+    // Create an empty array to store interval dates
+    const intervals = [];
+
+    // Create intervals of dates with the specified duration
+    for (let currentDate = new Date(startDate); currentDate <= endDate; currentDate.setDate(currentDate.getDate() + intervalDays)) {
+      intervals.push(new Date(currentDate));
+    }
+
+    // Define MongoDB aggregation pipelines for each interval
+    const countryPipelines = intervals.map((intervalStartDate, index) => {
+      // Calculate the end date of the current interval
+      const intervalEndDate = new Date(intervalStartDate);
+      intervalEndDate.setDate(intervalEndDate.getDate() + intervalDays);
+
+      // Define a $match stage to filter documents within the current interval
+      return {
+        $match: {
+          crawled: { $gte: intervalStartDate, $lt: intervalEndDate }
+        }
+      };
+    });
+
+    const siteUrlPipelines = intervals.map((intervalStartDate, index) => {
+      // Calculate the end date of the current interval
+      const intervalEndDate = new Date(intervalStartDate);
+      intervalEndDate.setDate(intervalEndDate.getDate() + intervalDays);
+
+      // Define a $match stage to filter documents within the current interval
+      return {
+        $match: {
+          crawled: { $gte: intervalStartDate, $lt: intervalEndDate }
+        }
+      };
+    });
+
+    const languagePipelines = intervals.map((intervalStartDate, index) => {
+      // Calculate the end date of the current interval
+      const intervalEndDate = new Date(intervalStartDate);
+      intervalEndDate.setDate(intervalEndDate.getDate() + intervalDays);
+
+      // Define a $match stage to filter documents within the current interval
+      return {
+        $match: {
+          crawled: { $gte: intervalStartDate, $lt: intervalEndDate }
+        }
+      };
+    });
+
+    // Execute MongoDB aggregation for each pipeline asynchronously and collect results
+    const [countryData, siteUrlData, languageData] = await Promise.all([
+      Promise.all(countryPipelines.map(pipeline => this.articleModel.aggregate([
+        pipeline,
+        {
+          $lookup: {
+            from: "articledetails",
+            localField: "reference",
+            foreignField: "_id",
+            as: "articleDetails"
+          }
+        },
+        {
+          $unwind: "$articleDetails"
+        },
+        {
+          $group: {
+            _id: "$articleDetails.country",
+            count: { $sum: 1 }
+          }
+        }
+      ]))),
+      Promise.all(siteUrlPipelines.map(pipeline => this.articleModel.aggregate([
+        pipeline,
+        {
+          $lookup: {
+            from: "articledetails",
+            localField: "reference",
+            foreignField: "_id",
+            as: "articleDetails"
+          }
+        },
+        {
+          $unwind: "$articleDetails"
+        },
+        {
+          $group: {
+            _id: "$articleDetails.site_url",
+            count: { $sum: 1 }
+          }
+        }
+      ]))),
+      Promise.all(languagePipelines.map(pipeline => this.articleModel.aggregate([
+        pipeline,
+        {
+          $group: {
+            _id: "$language",
+            count: { $sum: 1 }
+          }
+        }
+      ])))
+    ]);
+
+    languageData.forEach(e => {
+      console.log(
+        e.find(item => item._id === 'english')?.count || 0
+      );
+
+
+    })
+
+
+    const languageCounts = [{
+      english: [],
+      french: [],
+      spanish: [],
+      turkish: []
+    }]
+    languageData.map(e => {
+      languageCounts[0].english.push(e.find(item => item._id === 'english')?.count || 0)
+      languageCounts[0].french.push(e.find(item => item._id === 'french')?.count || 0)
+      languageCounts[0].spanish.push(e.find(item => item._id === 'spanish')?.count || 0)
+      languageCounts[0].turkish.push(e.find(item => item._id === 'turkish')?.count || 0)
+    })
+
+    // country
+    const countryCounts = [{
+      BG: [],
+      US: [],
+      GB: [],
+      LI: []
+    }]
+    countryData.map(e => {
+      countryCounts[0].LI.push(e.find(item => item._id === 'LI')?.count || 0)
+      countryCounts[0].BG.push(e.find(item => item._id === 'BG')?.count || 0)
+      countryCounts[0].US.push(e.find(item => item._id === 'US')?.count || 0)
+      countryCounts[0].GB.push(e.find(item => item._id === 'GB')?.count || 0)
+    })
+
+    // Url site count
+    const urlSiteCounts = [{
+      "topinfopost.com": [],
+      "truthdig.com": [],
+      "wnd.com": [],
+      "truth-out.org": []
+    }]
+    siteUrlData.map(e => {
+      urlSiteCounts[0]['topinfopost.com'].push(e.find(item => item._id === 'topinfopost.com')?.count || 0)
+      urlSiteCounts[0]['truth-out.org'].push(e.find(item => item._id === 'truth-out.org')?.count || 0)
+      urlSiteCounts[0]['truthdig.com'].push(e.find(item => item._id === 'truthdig.com')?.count || 0)
+      urlSiteCounts[0]['wnd.com'].push(e.find(item => item._id === 'wnd.com')?.count || 0)
+    })
+
+    // Extract dates from intervals array and format them as ISO strings
+    const dates = intervals.map(interval => interval.toISOString());
+
+    return { dates,languageCounts, countryCounts,urlSiteCounts};
+  }
 }

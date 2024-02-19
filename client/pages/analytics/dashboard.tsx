@@ -21,13 +21,6 @@ interface BlogDataItem {
     btnbg: string;
 }
 
-interface TopCardsProps {
-    bg: string;
-    title: string;
-    subtitle: string;
-    earning: string;
-    icon: string;
-  }
 
 const BlogData: BlogDataItem[] = [
     {
@@ -65,14 +58,15 @@ const BlogData: BlogDataItem[] = [
 ];
 
 const Dashboard: React.FC = () => {
-    const { getAllArticles, articles } = useArticleStore();
+    const { getAllArticles, articles, getTotalStats, totalCountries, totalPages, totalSites, totalLanguages } = useArticleStore();
     const router = useRouter()
     useEffect(() => {
-        let localAuth:any = localStorage.getItem('Auth')
+        let localAuth: any = localStorage.getItem('Auth')
         localAuth = JSON.parse(localAuth!);
         if (localAuth?.state?.isLoggedin) {
             router.push('/analytics/dashboard')
             getAllArticles(1);
+            getTotalStats()
         } else {
             router.push('/auth/login')
         }
@@ -94,48 +88,48 @@ const Dashboard: React.FC = () => {
                         <Col sm="6" lg="3">
                             <TopCards
                                 bg="bg-light-success text-success"
-                                title="Profit"
-                                subtitle="Yearly Earning"
-                                earning="$21k"
-                                icon="bi bi-wallet"
+                                title="Total"
+                                subtitle="Total Articles"
+                                earning={totalPages}
+                                icon="bi bi-file-break"
                             />
                         </Col>
                         <Col sm="6" lg="3">
                             <TopCards
                                 bg="bg-light-danger text-danger"
-                                title="Refunds"
-                                subtitle="Refund given"
-                                earning="$1k"
-                                icon="bi bi-coin"
+                                title="Total languages"
+                                subtitle="Total languages"
+                                earning={totalLanguages.length}
+                                icon="bi bi-translate"
                             />
                         </Col>
                         <Col sm="6" lg="3">
                             <TopCards
                                 bg="bg-light-warning text-warning"
-                                title="New Project"
-                                subtitle="Yearly Project"
-                                earning="456"
-                                icon="bi bi-basket3"
+                                title="Total Countries"
+                                subtitle="Total Countries"
+                                earning={totalCountries.length}
+                                icon="bi bi-globe-americas"
                             />
                         </Col>
                         <Col sm="6" lg="3">
                             <TopCards
                                 bg="bg-light-info text-into"
-                                title="Sales"
-                                subtitle="Weekly Sales"
-                                earning="210"
-                                icon="bi bi-bag"
+                                title="Total Source"
+                                subtitle="Total Source"
+                                earning={totalSites.length}
+                                icon="bi bi-diagram-3"
                             />
                         </Col>
                     </Row>
                     {/***Sales & Feed***/}
                     <Row>
-                        <Col sm="12" lg="6" xl="7" xxl="8">
+                        <Col sm="12" lg="12" xl="12" xxl="12">
                             <SalesChart />
                         </Col>
-                        <Col sm="12" lg="6" xl="5" xxl="4">
+                        {/* <Col sm="12" lg="6" xl="5" xxl="4">
                             <Feeds />
-                        </Col>
+                        </Col> */}
                     </Row>
                     {/***Blog Cards***/}
                     {/* <Row>

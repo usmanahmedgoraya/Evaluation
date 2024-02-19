@@ -1,11 +1,11 @@
 import FullLayout from '@/src/layouts/FullLayout';
-import useArticleStore from '@/zustand/article.zustand'
-import React, { useEffect, useState } from 'react'
-import { Card, CardBody, CardTitle, Col, Table } from 'reactstrap'
+import useArticleStore from '@/zustand/article.zustand';
 import Pagination from '@mui/material/Pagination';
+import React, { useEffect, useState } from 'react';
+import { Card, CardBody, CardTitle, Col, Table } from 'reactstrap';
 
 const DataFigures = () => {
-    const { getAllArticles, articles,totalPages } = useArticleStore();
+    const { getAllArticles, articles, totalPages } = useArticleStore();
     const [currentPage, setCurrentPage] = useState(1);
     const articlesPerPage = 10; // Number of articles to display per page
 
@@ -48,7 +48,6 @@ const DataFigures = () => {
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>UUID</th>
                                             <th>Author</th>
                                             <th>Country</th>
                                             <th>Language</th>
@@ -66,11 +65,10 @@ const DataFigures = () => {
                                                 return (
                                                     <tr key={article._id}>
                                                         <th scope="row">{indexOfFirstArticle + index + 1}</th>
-                                                        <td>{article.uuid}</td>
-                                                        <td>{article.author}</td>
+                                                        <td className='font-medium'>{article.author}</td>
                                                         <td>{article.reference.country}</td>
                                                         <td>{article.language}</td>
-                                                        <td>{article.site_url}</td>
+                                                        <td>{article.reference.site_url}</td>
                                                         <td>{article.comments.length}</td>
                                                         <td>{article.likes.length}</td>
                                                         <td>{article.reference.spam_score}</td>
@@ -83,7 +81,7 @@ const DataFigures = () => {
                                 </Table>
                             </div>
                         </CardBody>
-                        <Pagination count={Math.ceil(totalPages/10)} onChange={handlePagination} className='my-4' />
+                        <Pagination count={Math.ceil(totalPages / 10)} onChange={handlePagination} className='my-4' />
                     </Card>
                 </Col>
             </div>

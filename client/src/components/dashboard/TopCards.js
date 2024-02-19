@@ -22,7 +22,7 @@ const TopCards = ({ bg, icon, earning, subtitle,title}) => {
 TopCards.propTypes = {
   bg: PropTypes.string,
   icon: PropTypes.string,
-  earning: PropTypes.string,
+  earning: PropTypes.number,
   subtitle: PropTypes.string,
 };
 

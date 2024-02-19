@@ -32,4 +32,17 @@ export class NewsController {
   async getAnalytics() {
     return await this.newsService.getAnalytics()
   }
+
+
+  @Get('analytics-stats')
+  async getAnalyticsStats() {
+    return await this.newsService.totalAnalyticsStats()
+  }
+
+  @Get('total-stats')
+  async getTotalStats() {
+    return await this.newsService.totalStats()
+  }
+
+
 }

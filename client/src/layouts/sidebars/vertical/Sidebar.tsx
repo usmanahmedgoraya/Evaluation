@@ -43,14 +43,16 @@ const Sidebar: React.FC<{ showMobilemenu: () => void }> = ({ showMobilemenu }) =
 
   return (
     <div className="p-3">
-      <div className="d-flex align-items-center">
+      <div className="d-flex align-items-center justify-between">
         <Logo />
         <Button
           close
           size="sm"
-          className="ms-auto d-lg-none"
+          className="ms-auto sm:hidden"
           onClick={showMobilemenu}
-        ></Button>
+        >
+          <i className="bi bi-x-square"></i>
+        </Button>
       </div>
       <div className="pt-4 mt-2">
         <Nav vertical className="sidebarNav">

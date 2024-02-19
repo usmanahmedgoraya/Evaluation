@@ -28,27 +28,27 @@ const Header: React.FC<HeaderProps> = ({ showMobmenu }) => {
   return (
     <Navbar color="primary" dark expand="md">
       <div className="d-flex align-items-center">
-        <NavbarBrand href="/" className="d-lg-none">
+        <NavbarBrand href="/" className="hidden sm:visible">
           <Image src={LogoWhite} alt="logo" />
         </NavbarBrand>
         <Button color="primary" className="d-lg-none" onClick={showMobmenu}>
           <i className="bi bi-list"></i>
         </Button>
       </div>
-      <Nav className="me-auto" navbar>
-        <NavItem>
+      <div className="me-auto flex gap-x-4 text-white">
+        <div>
           <Link href="/" passHref className="nav-link">
             Home
           </Link>
-        </NavItem>
+        </div>
         {/* <NavItem>
           <Link href="/about" className="nav-link" passHref>
             Blogs
           </Link>
         </NavItem> */}
-        <NavItem>
+        <div>
           <Link href="/analytics/dashboard" className="nav-link" passHref>Analytics</Link>
-        </NavItem>
+        </div>
         {/* <UncontrolledDropdown inNavbar nav>
           <DropdownToggle caret nav>
             DD Menu
@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({ showMobmenu }) => {
             <DropdownItem>Reset</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown> */}
-      </Nav>
+      </div >
       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
         <DropdownToggle color="primary">
           <div style={{ lineHeight: "0px" }}>
@@ -76,10 +76,7 @@ const Header: React.FC<HeaderProps> = ({ showMobmenu }) => {
         <DropdownMenu>
           <DropdownItem header>Info</DropdownItem>
           <DropdownItem>My Account</DropdownItem>
-          <DropdownItem>Edit Profile</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem>My Balance</DropdownItem>
-          <DropdownItem>Inbox</DropdownItem>
           <DropdownItem>Logout</DropdownItem>
         </DropdownMenu>
       </Dropdown>

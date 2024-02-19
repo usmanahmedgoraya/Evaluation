@@ -49,14 +49,17 @@ interface ReactionCounts {
   [key: string]: number;
 }
 
-const domain = 'https://evaluation-backend-kappa.vercel.app';
-// const domain = 'http://localhost:3002';
+// const domain = 'https://evaluation-backend-kappa.vercel.app';
+const domain = 'http://localhost:3002';
 
 const ArticleStore = (set: any) => ({
   articles: [] as Article[],
   singleArticle: {} as Article,
   analytics: {},
   totalPages: 0,
+  totalCountries: [],
+  totalLanguages: [],
+  totalSites: [],
   reactions: {
     happy: 0,
     satisfaction: 0,
@@ -82,7 +85,7 @@ const ArticleStore = (set: any) => ({
     localAuth = JSON.parse(localAuth || 'null') as LocalAuth | null;
     const res = await fetch(`${domain}/article/single/${id}`, {
       method: 'GET',
-      
+
     });
     const data = await res.json();
     console.log(data);
@@ -146,6 +149,35 @@ const ArticleStore = (set: any) => ({
       analytics: data
     });
   },
+
+  getTotalStats: async () => {
+    try {
+      const res = await fetch(`${domain}/article/total-stats`);
+      const data = await res.json()
+      console.log(data);
+      set({
+        totalCountries: data.countryData,
+        totalLanguages: data.languageData,
+        totalSites: data.siteUrlData
+      })
+    } catch (error) {
+      console.log(error);
+
+    }
+  },
+  getTotalAnalyticsStats: async () => {
+    try {
+      const res = await fetch(`${domain}/article/analytics-stats`);
+      const data = await res.json()
+      console.log(data);
+      set({
+        analytics: data
+      })
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
 
 });
 
