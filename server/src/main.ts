@@ -31,7 +31,11 @@ async function bootstrap() {
   //   response.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   //   next();
   // });
-  app.enableCors();
+  app.enableCors({
+    origin: 'https://evaluation-rust.vercel.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
+  });
 
   // Start the application
   await app.listen(3002);
