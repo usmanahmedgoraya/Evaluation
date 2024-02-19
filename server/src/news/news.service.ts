@@ -28,9 +28,11 @@ export class NewsService {
     const skip = (page - 1) * limit;
     const articles = await this.articleModel.find().populate('reference').populate({
       path: 'likes',
-      model: 'Reaction', // Specify the model to populate likes with
+      // Specify the model to populate likes with
+      model: 'Reaction', 
     }).skip(skip).limit(limit);
-    const totalCount = await this.articleModel.countDocuments(); // Total count of documents in the collection
+    const totalCount = await this.articleModel.countDocuments();
+     // Total count of documents in the collection
     return { articles, totalCount };
   }
 
@@ -71,59 +73,62 @@ export class NewsService {
   async findOne(id: string): Promise<Article> {
     const article = await this.articleModel.findOne({ _id: id }).populate('reference').populate({
       path: 'likes',
-      model: 'Reaction', // Specify the model to populate likes with
-    }); // Populate the 'likes' array
+      model: 'Reaction',
+       // Specify the model to populate likes with
+    });
+     // Populate the 'likes' array
     return article;
   }
 
   // Update collection data
-  async updateTable1WithReferences(): Promise<void> {
-    try {
-      const table1Docs = await this.articleModel.find().lean(); // Convert to plain JavaScript objects
-      console.log(table1Docs);
-      for (const table1Doc of table1Docs) {
-        console.log("New Document updated");
-        // Update the 'comments' field to an empty array if it's not already an array
-        if (!Array.isArray(table1Doc.comments)) {
-          table1Doc.comments = [];
-        }
-        // Update the 'likes' field to an empty array if it's not already an array
-        if (!Array.isArray(table1Doc.likes)) {
-          table1Doc.likes = [];
-        }
-        // Save the modified document
-        await this.articleDetailModel.findByIdAndUpdate(table1Doc._id, { $set: { comments: table1Doc.comments, likes: table1Doc.likes } });
-        console.log("Updated data", table1Doc);
-      }
-      console.log('Table 1 updated with modified fields.');
-    } catch (error) {
-      console.error('Error updating Table 1 with modified fields:', error);
-      throw new Error('An error occurred while updating Table 1 with modified fields.');
-    }
-  }
-  async updateTable1WithReference2(): Promise<void> {
-    try {
-      const table1Docs = await this.articleModel.find().limit(10).lean(); // Convert to plain JavaScript objects
-      const secondTableDocs = await this.articleDetailModel.find().limit(10).lean();
-      console.log(table1Docs);
-      // for (const table1Doc of table1Docs) {
-      //   const correspondingTable2Doc = secondTableDocs.find(doc => doc?.uuid === table1Doc?.uuid);
-      //   console.log("new waiting");
-      //   if (correspondingTable2Doc) {
-      //     console.log("New Document updated");
-      //     // Dynamically add the 'reference' field to the document
-      //     table1Doc.reference = correspondingTable2Doc._id;
-      //     // Save the modified document
-      //     await this.articleDetailModel.findByIdAndUpdate(table1Doc._id, { $set: { reference: correspondingTable2Doc._id } });
-      //     console.log("updated data", table1Doc);
-      //   }
-      // }
-      console.log('Table 1 updated with references to Table 2.');
-    } catch (error) {
-      console.error('Error updating Table 1 with references:', error);
-      throw new Error('An error occurred while updating Table 1 with references.');
-    }
-  }
+  // async updateTable1WithReferences(): Promise<void> {
+  //   try {
+  //     const table1Docs = await this.articleModel.find().lean(); // Convert to plain JavaScript objects
+  //     console.log(table1Docs);
+  //     for (const table1Doc of table1Docs) {
+  //       console.log("New Document updated");
+  //       // Update the 'comments' field to an empty array if it's not already an array
+  //       if (!Array.isArray(table1Doc.comments)) {
+  //         table1Doc.comments = [];
+  //       }
+  //       // Update the 'likes' field to an empty array if it's not already an array
+  //       if (!Array.isArray(table1Doc.likes)) {
+  //         table1Doc.likes = [];
+  //       }
+  //       // Save the modified document
+  //       await this.articleDetailModel.findByIdAndUpdate(table1Doc._id, { $set: { comments: table1Doc.comments, likes: table1Doc.likes } });
+  //       console.log("Updated data", table1Doc);
+  //     }
+  //     console.log('Table 1 updated with modified fields.');
+  //   } catch (error) {
+  //     console.error('Error updating Table 1 with modified fields:', error);
+  //     throw new Error('An error occurred while updating Table 1 with modified fields.');
+  //   }
+  // }
+  
+  // async updateTable1WithReference2(): Promise<void> {
+  //   try {
+  //     const table1Docs = await this.articleModel.find().limit(10).lean(); // Convert to plain JavaScript objects
+  //     const secondTableDocs = await this.articleDetailModel.find().limit(10).lean();
+  //     console.log(table1Docs);
+  //     // for (const table1Doc of table1Docs) {
+  //     //   const correspondingTable2Doc = secondTableDocs.find(doc => doc?.uuid === table1Doc?.uuid);
+  //     //   console.log("new waiting");
+  //     //   if (correspondingTable2Doc) {
+  //     //     console.log("New Document updated");
+  //     //     // Dynamically add the 'reference' field to the document
+  //     //     table1Doc.reference = correspondingTable2Doc._id;
+  //     //     // Save the modified document
+  //     //     await this.articleDetailModel.findByIdAndUpdate(table1Doc._id, { $set: { reference: correspondingTable2Doc._id } });
+  //     //     console.log("updated data", table1Doc);
+  //     //   }
+  //     // }
+  //     console.log('Table 1 updated with references to Table 2.');
+  //   } catch (error) {
+  //     console.error('Error updating Table 1 with references:', error);
+  //     throw new Error('An error occurred while updating Table 1 with references.');
+  //   }
+  // }
 
 
 
