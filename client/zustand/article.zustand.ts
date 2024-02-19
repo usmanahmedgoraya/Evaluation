@@ -117,17 +117,19 @@ const ArticleStore = (set: any) => ({
       try {
         let localAuth: any = localStorage.getItem('Auth');
         localAuth = JSON.parse(localAuth || 'null') as LocalAuth | null;
+        console.log(localAuth.state.token);
+        
         // Make a POST request to the comment endpoint
         if (localAuth?.state?.user) {
           const res = await fetch(`${domain}/article/reaction/${articleId}`, {
             method: 'POST',
-            mode: "no-cors", // no-cors, *cors, same-origin
-            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: "same-origin",
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `bearer ${localAuth.state.token}`,
+              Authorization: `bearer ${localAuth?.state?.token}`,
             },
+            mode: "no-cors", // no-cors, *cors, same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "omit",
             body: JSON.stringify({
               type: key,
             }),
