@@ -22,17 +22,10 @@ async function bootstrap() {
   // });
 
   app.enableCors({
-    origin: ($origin, cb) => {
-      if (['https://evaluation-rust.vercel.app'].indexOf($origin) > -1) {
-        cb(null, true);
-      }  else {
-        cb(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true, // << totally ruins it
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-  });
+
+    origin:'https://evaluation-rust.vercel.app',
+    
+    });
 
   // Start the application
   await app.listen(3002);
