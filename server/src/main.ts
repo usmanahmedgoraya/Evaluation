@@ -33,8 +33,8 @@ async function bootstrap() {
   // });
   app.enableCors({
     origin: 'https://evaluation-rust.vercel.app',
-    methods: ['GET,HEAD,PUT,PATCH,POST,DELETE'],
-    allowedHeaders: ['Content-Type','Authorization'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    // allowedHeaders: 'Content-Type,Authorization',
   });
 
   // Start the application
