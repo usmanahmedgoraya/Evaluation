@@ -11,14 +11,27 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // Ensure CORS is allowed for localhost:3000
+  // app.enableCors({
+  //   origin: true,
+  //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  //   // allowed headers
+  //   allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept' ,'Authorization'],
+  //   // headers exposed to the client
+  //   exposedHeaders: ['Authorization'],
+  //   credentials: true, // Enable credentials (cookies, authorization headers) cross-origin
+  // });
+
   app.enableCors({
-    origin: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    // allowed headers
-    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept' ,'Authorization'],
-    // headers exposed to the client
-    exposedHeaders: ['Authorization'],
-    credentials: true, // Enable credentials (cookies, authorization headers) cross-origin
+    origin: ($origin, cb) => {
+      if (['https://evaluation-rust.vercel.app'].indexOf($origin) > -1) {
+        cb(null, true);
+      }  else {
+        cb(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // << totally ruins it
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   });
 
   // Start the application
