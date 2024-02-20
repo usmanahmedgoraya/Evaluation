@@ -26,6 +26,7 @@ const AuthStore = (set) => ({
             // Make a POST request to the login endpoint
             const res = await fetch(`${domain}/auth/login`, {
                 method: 'POST',
+                mode: "no-cors",
                 headers: {
                     "Content-Type": "application/json",
                 },
