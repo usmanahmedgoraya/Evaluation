@@ -27,12 +27,8 @@ const AuthStore = (set) => ({
             const res = await fetch(`${domain}/auth/login`, {
                 method: 'POST',
 
-                credentials:true,
-
                 headers: {
-                    "Content-Type": "application/json",
-                    'Access-Control-Allow-Origin': '*'
-
+                    'content-type': 'application/json'
                 },
                 body: JSON.stringify(loginData),
             });
@@ -75,7 +71,7 @@ const AuthStore = (set) => ({
             // Make a POST request to the signup endpoint
             const res = await fetch(`${domain}/auth/signup`, {
                 method: 'POST',
-                mode:'no-cors',
+                mode: 'no-cors',
                 body: formData,
             });
 
@@ -179,7 +175,7 @@ const AuthStore = (set) => ({
                 // Parse the response as JSON
                 const updatedUserData = await res.json();
                 console.log(updatedUserData);
-                if(!res.ok){
+                if (!res.ok) {
                     throw new Error('Response is ok')
                 }
 
@@ -189,11 +185,11 @@ const AuthStore = (set) => ({
                     user: updatedUserData
                 }));
             }
-            } catch (error) {
-                console.log(error);
-            }
+        } catch (error) {
+            console.log(error);
+        }
     },
-    signout: () => {  
+    signout: () => {
         set({
             isLoggedin: false
         })
