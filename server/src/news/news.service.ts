@@ -8,9 +8,6 @@ import { React, Reaction } from './schema/reaction.schema';
 
 @Injectable()
 export class NewsService {
-  totalCountry() {
-    throw new Error('Method not implemented.');
-  }
   constructor(
     // Specify the type for articleModel
     @InjectModel(Article.name)
