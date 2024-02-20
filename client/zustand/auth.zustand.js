@@ -71,7 +71,6 @@ const AuthStore = (set) => ({
             // Make a POST request to the signup endpoint
             const res = await fetch(`${domain}/auth/signup`, {
                 method: 'POST',
-                mode: 'no-cors',
                 body: formData,
             });
 
