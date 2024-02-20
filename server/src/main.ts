@@ -11,7 +11,8 @@ async function bootstrap() {
 
 
   app.use(cors({
-    origin:'https://evaluation-rust.vercel.app'
+    origin:'https://evaluation-rust.vercel.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }))
   // app.enableCors({
   //   origin: 'https://evaluation-rust.vercel.app',
