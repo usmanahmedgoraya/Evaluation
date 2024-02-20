@@ -14,11 +14,6 @@ async function bootstrap() {
     origin:'https://evaluation-rust.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }))
-  // app.enableCors({
-  //   origin: 'https://evaluation-rust.vercel.app',
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  //   allowedHeaders: 'Content-Type,Authorization',
-  // });
 
   // Start the application
   await app.listen(3002);

@@ -26,9 +26,13 @@ const AuthStore = (set) => ({
             // Make a POST request to the login endpoint
             const res = await fetch(`${domain}/auth/login`, {
                 method: 'POST',
-                mode: "no-cors",
+
+                credentials:true,
+
                 headers: {
                     "Content-Type": "application/json",
+                    'Access-Control-Allow-Origin': '*'
+
                 },
                 body: JSON.stringify(loginData),
             });
@@ -71,6 +75,7 @@ const AuthStore = (set) => ({
             // Make a POST request to the signup endpoint
             const res = await fetch(`${domain}/auth/signup`, {
                 method: 'POST',
+                mode:'no-cors',
                 body: formData,
             });
 
