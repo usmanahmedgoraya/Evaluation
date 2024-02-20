@@ -11,7 +11,11 @@ async function bootstrap() {
 
 
   app.enableCors({
-    origin:'https://evaluation-rust.vercel.app'
+    origin:'https://evaluation-rust.vercel.app',
+    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'Authorization'],
+    // allowedHeaders: '*',
+    credentials: true,
+    optionsSuccessStatus: 204,
   })
 
   // Start the application
