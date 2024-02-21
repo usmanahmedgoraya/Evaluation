@@ -61,7 +61,7 @@ const Header: React.FC<HeaderProps> = ({ showMobmenu }) => {
           </DropdownMenu>
         </UncontrolledDropdown> */}
       </div >
-      <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+      {/* <Dropdown isOpen={dropdownOpen} toggle={toggle}>
         <DropdownToggle color="primary">
           <div style={{ lineHeight: "0px" }}>
             <Image
@@ -79,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({ showMobmenu }) => {
           <DropdownItem divider />
           <DropdownItem>Logout</DropdownItem>
         </DropdownMenu>
-      </Dropdown>
+      </Dropdown> */}
     </Navbar>
   );
 };

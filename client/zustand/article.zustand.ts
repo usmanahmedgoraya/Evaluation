@@ -49,8 +49,8 @@ interface ReactionCounts {
   [key: string]: number;
 }
 
-const domain = 'https://evaluation-backend-kappa.vercel.app';
-// const domain = 'http://localhost:3002';
+// const domain = 'https://evaluation-backend-kappa.vercel.app';
+const domain = 'http://localhost:3002';
 
 const ArticleStore = (set: any) => ({
   articles: [] as Article[],

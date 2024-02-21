@@ -58,7 +58,7 @@ export default function Page() {
         router.push('/auth/login')
       } else {
         setIsLoggedin(true)
-        const counts: any = await Promise.all([getSingleArticle(router.query.id)])
+        const counts: any = await getSingleArticle(router.query.id)
         setUserReaction(counts?.userReaction?.reactionType)
         // Update the reactionCounts state based on the reactions state
         setReactionCounts({

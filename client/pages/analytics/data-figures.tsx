@@ -65,15 +65,15 @@ const DataFigures = () => {
                                                 return (
                                                     <tr key={article._id}>
                                                         <th scope="row">{indexOfFirstArticle + index + 1}</th>
-                                                        <td className='font-medium'>{article.author}</td>
-                                                        <td>{article.reference.country}</td>
-                                                        <td>{article.language}</td>
-                                                        <td>{article.reference.site_url}</td>
-                                                        <td>{article.comments.length}</td>
-                                                        <td>{article.likes.length}</td>
-                                                        <td>{article.reference.spam_score}</td>
-                                                        <td>{formatDate(article.published)}</td>
-                                                        <td>{formatDate(article.crawled)}</td>
+                                                        <td className='font-medium'>{article?.author}</td>
+                                                        <td>{article?.reference?.country}</td>
+                                                        <td>{article?.language}</td>
+                                                        <td>{article?.reference?.site_url}</td>
+                                                        <td>{article?.comments?.length}</td>
+                                                        <td>{article?.likes?.length}</td>
+                                                        <td>{article?.reference?.spam_score}</td>
+                                                        <td>{formatDate(article?.published)}</td>
+                                                        <td>{formatDate(article?.crawled)}</td>
                                                     </tr>)
                                             })
                                         }

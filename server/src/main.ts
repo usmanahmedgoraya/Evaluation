@@ -15,7 +15,7 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'], // or specify the headers you need
   };
   // Enable CORS with options
-  app.enableCors(corsOptions);
+  app.enableCors();
 
   app.useGlobalPipes(new ValidationPipe());
 
