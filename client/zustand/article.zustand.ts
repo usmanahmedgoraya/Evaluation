@@ -127,7 +127,6 @@ const ArticleStore = (set: any) => ({
               'Content-Type': 'application/json',
               'Authorization': `bearer ${localAuth?.state?.token}`,
             },
-            mode: "cors", // no-cors, *cors, same-origin
             body: JSON.stringify({
               type: key,
             }),

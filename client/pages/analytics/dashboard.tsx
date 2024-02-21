@@ -1,13 +1,12 @@
 import Head from "next/head";
 import { StaticImageData } from "next/image";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Col, Row } from "reactstrap";
 import bg1 from "../../src/assets/images/bg/bg1.jpg";
 import bg2 from "../../src/assets/images/bg/bg2.jpg";
 import bg3 from "../../src/assets/images/bg/bg3.jpg";
 import bg4 from "../../src/assets/images/bg/bg4.jpg";
-import Feeds from "../../src/components/dashboard/Feeds";
 import SalesChart from "../../src/components/dashboard/SalesChart";
 import TopCards from "../../src/components/dashboard/TopCards";
 import FullLayout from "../../src/layouts/FullLayout";
@@ -58,15 +57,17 @@ const BlogData: BlogDataItem[] = [
 ];
 
 const Dashboard: React.FC = () => {
-    const { getAllArticles, articles, getTotalStats, totalCountries, totalPages, totalSites, totalLanguages } = useArticleStore();
+    const { getAllArticles, getTotalStats, totalCountries, totalPages, totalSites, totalLanguages } = useArticleStore();
+    const [loading, setLoading] = useState(false)
     const router = useRouter()
     useEffect(() => {
         let localAuth: any = localStorage.getItem('Auth')
         localAuth = JSON.parse(localAuth!);
         if (localAuth?.state?.isLoggedin) {
             router.push('/analytics/dashboard')
-            getAllArticles(1);
-            getTotalStats()
+            setLoading(true);
+            Promise.all([getAllArticles(1), getTotalStats()])
+            setLoading(false);
         } else {
             router.push('/auth/login')
         }
@@ -91,6 +92,7 @@ const Dashboard: React.FC = () => {
                                 title="Total"
                                 subtitle="Total Articles"
                                 earning={totalPages}
+                                loading={loading}
                                 icon="bi bi-file-break"
                             />
                         </Col>
@@ -99,6 +101,7 @@ const Dashboard: React.FC = () => {
                                 bg="bg-light-danger text-danger"
                                 title="Total languages"
                                 subtitle="Total languages"
+                                loading={loading}
                                 earning={totalLanguages.length}
                                 icon="bi bi-translate"
                             />
@@ -108,6 +111,7 @@ const Dashboard: React.FC = () => {
                                 bg="bg-light-warning text-warning"
                                 title="Total Countries"
                                 subtitle="Total Countries"
+                                loading={loading}
                                 earning={totalCountries.length}
                                 icon="bi bi-globe-americas"
                             />
@@ -117,6 +121,7 @@ const Dashboard: React.FC = () => {
                                 bg="bg-light-info text-into"
                                 title="Total Source"
                                 subtitle="Total Source"
+                                loading={loading}
                                 earning={totalSites.length}
                                 icon="bi bi-diagram-3"
                             />

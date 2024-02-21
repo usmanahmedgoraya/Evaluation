@@ -47,6 +47,7 @@ export default function Page() {
   const [userReaction, setUserReaction] = useState<string | null>(null);
   const { getSingleArticle, singleArticle, giveReaction } = useArticleStore()
   const [isLoggedin, setIsLoggedin] = useState(false)
+  const [loading, setLoading] = useState(false)
 
 
   useEffect(() => {
@@ -57,7 +58,7 @@ export default function Page() {
         router.push('/auth/login')
       } else {
         setIsLoggedin(true)
-        const counts: any = await getSingleArticle(router.query.id)
+        const counts: any = await Promise.all([getSingleArticle(router.query.id)])
         setUserReaction(counts?.userReaction?.reactionType)
         // Update the reactionCounts state based on the reactions state
         setReactionCounts({

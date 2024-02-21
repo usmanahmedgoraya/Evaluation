@@ -4,9 +4,11 @@ import useAuthStore from '@/zustand/auth.zustand';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
+import { ColorRing } from 'react-loader-spinner';
 
 const Login: FC = () => {
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
   const { isLoggedin } = useAuthStore()
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [loginData, setLoginData] = useState({
@@ -40,7 +42,7 @@ const Login: FC = () => {
   const handleSubmit = async () => {
     let valid = true;
     const errorsCopy = { ...errors };
-    
+
     // Email validation
     if (!loginData.email.trim()) {
       errorsCopy.email = 'Email is required';
@@ -64,7 +66,9 @@ const Login: FC = () => {
 
     if (valid) {
       try {
+        setLoading(true);
         await Promise.all([login(loginData)]);
+        setLoading(false)
         if (isLoggedin) {
           router.push('/');
         } else {
@@ -108,7 +112,7 @@ const Login: FC = () => {
             </label>
             <div className="relative">
               <input
-                type={showPassword?'text':"password"}
+                type={showPassword ? 'text' : "password"}
                 id="password"
                 name="password"
                 className={`block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40 ${errors.password && 'border-red-500'}`}
@@ -131,8 +135,21 @@ const Login: FC = () => {
             Forget Password?
           </Link>
           <div className="mt-6" onClick={handleSubmit}>
-            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600">
-              Login
+            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600 flex justify-center items-center">
+              {loading ? (
+                <span className='flex gap-3'>
+                  <ColorRing
+                    visible={true}
+                    height="25"
+                    width="25"
+                    ariaLabel="color-ring-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="color-ring-wrapper"
+                    colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                  />
+                  <span>Logging...</span>
+                </span>
+              ) : 'Login'}
             </button>
           </div>
         </div>
