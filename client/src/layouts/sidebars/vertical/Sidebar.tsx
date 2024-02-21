@@ -48,10 +48,10 @@ const Sidebar: React.FC<{ showMobilemenu: () => void }> = ({ showMobilemenu }) =
         <Button
           close
           size="sm"
-          className="ms-auto sm:hidden"
+          className="sm:hidden"
           onClick={showMobilemenu}
         >
-          <i className="bi bi-x-square"></i>
+          <i className="bi bi-x-square lg:hidden"></i>
         </Button>
       </div>
       <div className="pt-4 mt-2">
@@ -63,7 +63,7 @@ const Sidebar: React.FC<{ showMobilemenu: () => void }> = ({ showMobilemenu }) =
                   onClick={handleLogout}
                   className="nav-link text-secondary py-3"
                   // Use a dummy href to satisfy prop type validation
-                  href="/"
+                  href="/auth/login"
                 >
                   <i className={navi.icon}></i>
                   <span className="ms-3 d-inline-block">{navi.title}</span>
