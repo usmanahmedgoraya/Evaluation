@@ -3,8 +3,8 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 // Set domain of URL to avoid from complexity
-// const domain = "https://evaluation-backend-kappa.vercel.app";
-const domain = "http://localhost:3002";
+const domain = "https://evaluation-backend-kappa.vercel.app";
+// const domain = "http://localhost:3002";
 
 // Define the AuthStore function to create and manage the state of your store
 const AuthStore = (set) => ({
