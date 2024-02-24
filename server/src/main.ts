@@ -9,12 +9,14 @@ async function bootstrap() {
 
   // Enable global validation pipe
 
+  // Define CORS options
   const corsOptions: CorsOptions = {
     origin: ['https://evaluation-rust.vercel.app'], // or specify your frontend URL(s) here
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    methods:  ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
   };
+
   // Enable CORS with options
-  app.enableCors();
+  app.enableCors(corsOptions);
 
   app.useGlobalPipes(new ValidationPipe());
 
