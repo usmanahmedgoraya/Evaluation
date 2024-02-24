@@ -11,8 +11,7 @@ async function bootstrap() {
 
   const corsOptions: CorsOptions = {
     origin: ['https://evaluation-rust.vercel.app'], // or specify your frontend URL(s) here
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // or specify the methods you need
-    allowedHeaders: ['Content-Type', 'Authorization'], // or specify the headers you need
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
   };
   // Enable CORS with options
   app.enableCors();
